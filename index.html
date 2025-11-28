@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Estudo de Expansão Elgin</title>
+  <style>
+    body { margin: 0; font-family: 'Visby Demi Bold', 'Segoe UI', Arial, sans-serif; background: #f5f7fb; color: #333; }
+    .header { display:flex; align-items:center; gap:20px; padding:16px 24px; background: #fff; border-bottom: 1px solid #e5e9f2; }
+    .logo svg { height:36px; }
+    .title { font-size: 28px; color: #2F3B52; }
+    .container { display:flex; }
+    .sidebar { width: 260px; background: #fff; border-right: 1px solid #e5e9f2; padding: 16px; }
+    .btn { display:block; width:100%; padding:10px 12px; margin-bottom:8px; background: #4FA1C5; color:#fff; border:none; border-radius:10px; cursor:pointer; text-align:left; }
+    .btn.secondary { background:#e6f3f8; color:#2F3B52; }
+    .content { flex:1; padding:16px; }
+    .legend { display:flex; gap:16px; align-items:center; padding:8px 0 16px; }
+    .legend .dot { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:6px; }
+    .filters select { width:100%; margin-bottom:10px; padding:8px; border-radius:8px; border:1px solid #ccc; }
+    .reset-btn { margin-top:10px; background:#F39C12; color:#fff; border:none; padding:10px; border-radius:8px; cursor:pointer; width:100%; }
+    .kpis { display:grid; grid-template-columns: repeat(2, minmax(180px, 1fr)); gap:12px; margin-bottom:12px; }
+    .card { background: #fff; border-radius:12px; padding:16px; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
+    .card h3 { margin:0; font-size:13px; color:#6b7a90; }
+    .card .value { font-size:26px; color:#2F3B52; font-weight:700; }
+    .grid { display:grid; grid-template-columns: 1fr 340px; gap:16px; }
+    .map { background: #fff; border-radius:12px; padding:12px; box-shadow: 0 2px 6px rgba(0,0,0,.06); min-height:420px; }
+    .table { background: #fff; border-radius:12px; padding:12px; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
+    table { width:100%; border-collapse:collapse; }
+    th, td { padding:8px 10px; border-bottom:1px solid #eef2f7; font-size:14px; }
+    th { background:#f6fbfe; color:#2F3B52; text-align:left; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <svg viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="36" fill="#4FA1C5" font-size="36" font-family="'Visby Demi Bold','Segoe UI',Arial">elgin</text>
+      </svg>
+    </div>
+    <div class="title">Estudo de Expansão Elgin</div>
+  </div>
+
+  <div class="container">
+    <aside class="sidebar">
+      <button class="btn secondary">Início</button>
+      <button class="btn secondary">Base de dados</button>
+      <h2>Filtros</h2>
+      <div class="filters">
+        <select id="fornecedorFilter"><option value="">Fornecedor</option></select>
+        <select id="regiaoFilter"><option value="">Região</option></select>
+        <select id="ufFilter"><option value="">UF</option></select>
+        <select id="modalidadeFilter"><option value="">Modalidade</option></select>
+      </div>
+      <button class="reset-btn" onclick="resetFilters()">Resetar filtros</button>
+    </aside>
+
+    <main class="content">
+      <div class="legend">
+        <div><span class="dot" style="background:#b0c4cf"></span><span>Outros fornecedores</span></div>
+        <div><span class="dot" style="background:#4FA1C5"></span><span>Elgin</span></div>
+      </div>
+
+      <div class="grid">
+        <section class="map card">
+
+<svg viewBox='0 0 800 700' xmlns='http://www.w3.org/2000/svg' style='width:100%;height:auto;'>
+  <rect x='50' y='50' width='150' height='120' fill='#4FA1C5' rx='10'></rect>
+  <text x='70' y='120' fill='#fff' font-size='16'>Norte</text>
+  <rect x='220' y='200' width='150' height='120' fill='#F39C12' rx='10'></rect>
+  <text x='240' y='270' fill='#fff' font-size='16'>Nordeste</text>
+  <rect x='400' y='220' width='150' height='120' fill='#6A1B9A' rx='10'></rect>
+  <text x='420' y='290' fill='#fff' font-size='16'>Centro-Oeste</text>
+  <rect x='280' y='360' width='150' height='120' fill='#1F5AA6' rx='10'></rect>
+  <text x='300' y='430' fill='#fff' font-size='16'>Sudeste</text>
+  <rect x='520' y='340' width='150' height='120' fill='#E91E63' rx='10'></rect>
+  <text x='540' y='410' fill='#fff' font-size='16'>Sul</text>
+</svg>
+
+        </section>
+
+        <aside>
+          <div class="kpis">
+            <div class="card">
+              <h3>Fábricas</h3>
+              <div class="value" id="kpiFabrica">0</div>
+            </div>
+            <div class="card">
+              <h3>Total de Fornecedores</h3>
+              <div class="value" id="kpiFornecedores">0</div>
+            </div>
+          </div>
+          <div class="table card">
+            <table>
+              <thead>
+                <tr>
+                  <th>Fornecedor</th>
+                  <th>Região</th>
+                  <th>Qtd Sites</th>
+                  <th>Área Total (m²)</th>
+                </tr>
+              </thead>
+              <tbody id="summaryBody"></tbody>
+            </table>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const data = [{"Fornecedor": "Mondial - Grupo MK", "Locais": "Araçariguama", "Modalidade": "CD", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 22000.0, "M.O própria/Terceira": "Própria", "Fontes": "https://infosaj.com.br/vitor-azevedo-articula-investimentos-para-implantacao-da-fabrica-da-mondial-em-cruz-das-almas/"}, {"Fornecedor": "Mondial - Grupo MK", "Locais": "Conceição do Jacuípe", "Modalidade": "Fábrica/CD", "UF": "BA", "Região": "Nordeste", "M² Área Construída": 206000.0, "M.O própria/Terceira": "Própria", "Fontes": "https://grupomk.com/"}, {"Fornecedor": "Mondial - Grupo MK", "Locais": "Cruz das Almas", "Modalidade": "Fábrica", "UF": "BA", "Região": "Nordeste", "M² Área Construída": 200000.0, "M.O própria/Terceira": "Própria", "Fontes": "https://www.terra.com.br/economia/grupo-mk-dono-da-mondial-e-da-aiwa-vai-investir-r-707-milhoes-em-terceira-fabrica-no-pais,d8d7d0d946fec3fce5d2f4664959435a1jl5h3r1.html"}, {"Fornecedor": "Mondial - Grupo MK", "Locais": "Manaus", "Modalidade": "Fábrica", "UF": "AM", "Região": "Norte", "M² Área Construída": 48000.0, "M.O própria/Terceira": "Própria", "Fontes": "Instagram/Linkedin/Site Notícias"}, {"Fornecedor": "Vonder - Grupo OVD", "Locais": "Curitiba", "Modalidade": "CD", "UF": "PR", "Região": "Sul", "M² Área Construída": 31000.0, "M.O própria/Terceira": "Própria", "Fontes": "site empresa OVD/Coordenador de Logística OVD"}, {"Fornecedor": "Vonder - Grupo OVD", "Locais": "Itajaí", "Modalidade": "CD", "UF": "SC", "Região": "Sul", "M² Área Construída": 16000.0, "M.O própria/Terceira": "Própria", "Fontes": "site empresa OVD/Coordenador de Logística OVD"}, {"Fornecedor": "Vonder - Grupo OVD", "Locais": "Jundiaí", "Modalidade": "CD", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 27000.0, "M.O própria/Terceira": "Própria", "Fontes": "site empresa OVD/Coordenador de Logística OVD"}, {"Fornecedor": "Vonder - Grupo OVD", "Locais": "Novo Hamburgo", "Modalidade": "CD", "UF": "RS", "Região": "Sul", "M² Área Construída": 11000.0, "M.O própria/Terceira": "Própria", "Fontes": "site empresa OVD/Coordenador de Logística OVD"}, {"Fornecedor": "Vonder - Grupo OVD", "Locais": "Feira de Santana", "Modalidade": "CD", "UF": "BA", "Região": "Nordeste", "M² Área Construída": 16500.0, "M.O própria/Terceira": "Própria", "Fontes": "site empresa OVD/Coordenador de Logística OVD"}, {"Fornecedor": "Vonder - Grupo OVD", "Locais": "Ap. de Goiania", "Modalidade": "CD", "UF": "GO", "Região": "Centro Oeste", "M² Área Construída": 16000.0, "M.O própria/Terceira": "Própria", "Fontes": "site empresa OVD/Coordenador de Logística OVD"}, {"Fornecedor": "Vonder - Grupo OVD", "Locais": "Betim", "Modalidade": "CD", "UF": "MG", "Região": "Sudeste", "M² Área Construída": 20000.0, "M.O própria/Terceira": "Própria", "Fontes": "site empresa OVD/Coordenador de Logística OVD"}, {"Fornecedor": "Vonder - Grupo OVD", "Locais": "Cabo de Sto Agostinho", "Modalidade": "CD", "UF": "PE", "Região": "Nordeste", "M² Área Construída": 18000.0, "M.O própria/Terceira": "Própria", "Fontes": "site empresa OVD/Coordenador de Logística OVD"}, {"Fornecedor": "Leveros", "Locais": "Conde", "Modalidade": "CD", "UF": "PB", "Região": "Nordeste", "M² Área Construída": 4528.0, "M.O própria/Terceira": "Própria", "Fontes": "Instagram/Facebook/Linkedin/Comercial Elgin"}, {"Fornecedor": "Leveros", "Locais": "Vila Velha", "Modalidade": "CD", "UF": "ES", "Região": "Sudeste", "M² Área Construída": 12000.0, "M.O própria/Terceira": "Própria", "Fontes": "Instagram/Facebook/Linkedin/Comercial Elgin"}, {"Fornecedor": "Leveros", "Locais": "Araquari", "Modalidade": "CD", "UF": "SC", "Região": "Sul", "M² Área Construída": 4000.0, "M.O própria/Terceira": "Própria", "Fontes": "Instagram/Facebook/Linkedin/Comercial Elgin"}, {"Fornecedor": "Dufrio", "Locais": "Curitiba", "Modalidade": "CD", "UF": "PR", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "Própria", "Fontes": "Institucional - Comercial Elgin/Google/Instagram"}, {"Fornecedor": "Dufrio", "Locais": "Guarulhos", "Modalidade": "CD", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "Própria", "Fontes": "Institucional - Comercial Elgin/Google/Youtube/Instagram"}, {"Fornecedor": "Dufrio", "Locais": "Vila Velha", "Modalidade": "CD", "UF": "ES", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "Própria", "Fontes": "Institucional - Comercial Elgin/Google/Instagram"}, {"Fornecedor": "Dufrio", "Locais": "Palmas", "Modalidade": "CD", "UF": "TO", "Região": "Norte", "M² Área Construída": 1.0, "M.O própria/Terceira": "Própria", "Fontes": "Institucional - Comercial Elgin/Google/Youtube/Instagram"}, {"Fornecedor": "Dufrio", "Locais": "Conde", "Modalidade": "CD", "UF": "PB", "Região": "Nordeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "Própria", "Fontes": "Institucional - Comercial Elgin/Google/Instagram"}, {"Fornecedor": "Frigelar", "Locais": "Simões e Filho", "Modalidade": "CD", "UF": "BA", "Região": "Nordeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.frigelar.com.br/nossas-lojas?srsltid=AfmBOopBWLRaDzABk5rb9ViNgrW21-NLhc9h2ibbaqdAdQIEdFY8r7oL"}, {"Fornecedor": "Frigelar", "Locais": "Vila Velha", "Modalidade": "CD", "UF": "ES", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.frigelar.com.br/nossas-lojas?srsltid=AfmBOopBWLRaDzABk5rb9ViNgrW21-NLhc9h2ibbaqdAdQIEdFY8r7oL"}, {"Fornecedor": "Frigelar", "Locais": "Cuiabá ", "Modalidade": "CD", "UF": "MT", "Região": "Centro Oeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.frigelar.com.br/nossas-lojas?srsltid=AfmBOopBWLRaDzABk5rb9ViNgrW21-NLhc9h2ibbaqdAdQIEdFY8r7oL"}, {"Fornecedor": "Frigelar", "Locais": "Extrema", "Modalidade": "CD", "UF": "MG", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.frigelar.com.br/nossas-lojas?srsltid=AfmBOopBWLRaDzABk5rb9ViNgrW21-NLhc9h2ibbaqdAdQIEdFY8r7oL"}, {"Fornecedor": "Frigelar", "Locais": "Curitiba ", "Modalidade": "CD", "UF": "PR", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.frigelar.com.br/nossas-lojas?srsltid=AfmBOopBWLRaDzABk5rb9ViNgrW21-NLhc9h2ibbaqdAdQIEdFY8r7oL"}, {"Fornecedor": "Frigelar", "Locais": "Cachoeirinha ", "Modalidade": "CD", "UF": "RS", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.frigelar.com.br/nossas-lojas?srsltid=AfmBOopBWLRaDzABk5rb9ViNgrW21-NLhc9h2ibbaqdAdQIEdFY8r7oL"}, {"Fornecedor": "Frigelar", "Locais": "Garuva", "Modalidade": "CD", "UF": "SC", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.frigelar.com.br/nossas-lojas?srsltid=AfmBOopBWLRaDzABk5rb9ViNgrW21-NLhc9h2ibbaqdAdQIEdFY8r7oL"}, {"Fornecedor": "Frigelar", "Locais": "Navegantes", "Modalidade": "CD", "UF": "SC", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.frigelar.com.br/nossas-lojas?srsltid=AfmBOopBWLRaDzABk5rb9ViNgrW21-NLhc9h2ibbaqdAdQIEdFY8r7oL"}, {"Fornecedor": "Frigelar", "Locais": "Osasco ", "Modalidade": "CD", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.frigelar.com.br/nossas-lojas?srsltid=AfmBOopBWLRaDzABk5rb9ViNgrW21-NLhc9h2ibbaqdAdQIEdFY8r7oL"}, {"Fornecedor": "Frigelar", "Locais": "Cajamar", "Modalidade": "CD", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.frigelar.com.br/nossas-lojas?srsltid=AfmBOopBWLRaDzABk5rb9ViNgrW21-NLhc9h2ibbaqdAdQIEdFY8r7oL"}, {"Fornecedor": "Tramontina", "Locais": "Belém", "Modalidade": "Fábrica", "UF": "PA", "Região": "Norte", "M² Área Construída": 42000.0, "M.O própria/Terceira": "-", "Fontes": "Nossas Fábricas | Tramontina / Linkedin"}, {"Fornecedor": "Tramontina", "Locais": "Carlos Barbosa", "Modalidade": "Fábrica", "UF": "RS", "Região": "Sul", "M² Área Construída": 323000.0, "M.O própria/Terceira": "-", "Fontes": "Nossas Fábricas | Tramontina / Linkedin"}, {"Fornecedor": "Tramontina", "Locais": "Recife", "Modalidade": "Fábrica", "UF": "PE", "Região": "Nordeste", "M² Área Construída": 95000.0, "M.O própria/Terceira": "-", "Fontes": "Nossas Fábricas | Tramontina / Linkedin"}, {"Fornecedor": "Tramontina", "Locais": "Carlos Barbosa", "Modalidade": "Fábrica", "UF": "RS", "Região": "Sul", "M² Área Construída": 43000.0, "M.O própria/Terceira": "-", "Fontes": "Nossas Fábricas | Tramontina / Linkedin"}, {"Fornecedor": "Tramontina", "Locais": "Farroupilha", "Modalidade": "Fábrica", "UF": "RS", "Região": "Sul", "M² Área Construída": 104000.0, "M.O própria/Terceira": "-", "Fontes": "Nossas Fábricas | Tramontina / Linkedin"}, {"Fornecedor": "Tramontina", "Locais": "Garibaldi", "Modalidade": "Fábrica", "UF": "RS", "Região": "Sul", "M² Área Construída": 102000.0, "M.O própria/Terceira": "-", "Fontes": "Nossas Fábricas | Tramontina / Linkedin"}, {"Fornecedor": "Tramontina", "Locais": "Carlos Barbosa", "Modalidade": "Fábrica", "UF": "RS", "Região": "Sul", "M² Área Construída": 107087.62, "M.O própria/Terceira": "-", "Fontes": "Nossas Fábricas | Tramontina / Linkedin"}, {"Fornecedor": "Tramontina", "Locais": "Carlos Barbosa", "Modalidade": "Fábrica", "UF": "RS", "Região": "Sul", "M² Área Construída": 53000.0, "M.O própria/Terceira": "-", "Fontes": "Nossas Fábricas | Tramontina / Linkedin"}, {"Fornecedor": "Intelbras", "Locais": "Manaus", "Modalidade": "CD", "UF": "AM", "Região": "Norte", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://loja.intelbras.com.br/institucional/sobre-a-intelbras/https://www.intelbras.com/pt-br/institucional/onde-estamos"}, {"Fornecedor": "Intelbras", "Locais": "São José", "Modalidade": "Fábrica", "UF": "SC", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://loja.intelbras.com.br/institucional/sobre-a-intelbras/https://www.intelbras.com/pt-br/institucional/onde-estamos"}, {"Fornecedor": "Intelbras", "Locais": "São José", "Modalidade": "CD", "UF": "SC", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://loja.intelbras.com.br/institucional/sobre-a-intelbras/https://www.intelbras.com/pt-br/institucional/onde-estamos"}, {"Fornecedor": "Intelbras", "Locais": "Tubarão", "Modalidade": "CD", "UF": "SC", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://loja.intelbras.com.br/institucional/sobre-a-intelbras/https://www.intelbras.com/pt-br/institucional/onde-estamos"}, {"Fornecedor": "Intelbras", "Locais": "Santa Rita do Sapucaí ", "Modalidade": "CD", "UF": "MG", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://loja.intelbras.com.br/institucional/sobre-a-intelbras/https://www.intelbras.com/pt-br/institucional/onde-estamos"}, {"Fornecedor": "Intelbras", "Locais": "Jaboatão dos Guararapes", "Modalidade": "CD", "UF": "PE", "Região": "Nordeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://loja.intelbras.com.br/institucional/sobre-a-intelbras/https://www.intelbras.com/pt-br/institucional/onde-estamos"}, {"Fornecedor": "Midea", "Locais": "Extrema", "Modalidade": "CD", "UF": "MG", "Região": "Sudeste", "M² Área Construída": 25000.0, "M.O própria/Terceira": "Própria", "Fontes": "https://www.instagram.com/p/DPoYdkPD6Ir/"}, {"Fornecedor": "Midea", "Locais": "Pouso Alegre", "Modalidade": "Fábrica", "UF": "MG", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://diariodocomercio.com.br/economia/centro-de-distribuicao-midea-carrier-extrema/"}, {"Fornecedor": "Midea", "Locais": "Manaus", "Modalidade": "Fábrica/CD", "UF": "AM", "Região": "Norte", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://diariodocomercio.com.br/economia/centro-de-distribuicao-midea-carrier-extrema/"}, {"Fornecedor": "Midea", "Locais": "Resende", "Modalidade": "CD", "UF": "RJ", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://diariodocomercio.com.br/economia/centro-de-distribuicao-midea-carrier-extrema/"}, {"Fornecedor": "Midea", "Locais": "Joinville", "Modalidade": "CD", "UF": "SC", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://diariodocomercio.com.br/economia/centro-de-distribuicao-midea-carrier-extrema/"}, {"Fornecedor": "Midea", "Locais": "Canoas", "Modalidade": "Fábrica/CD", "UF": "RS", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://diariodocomercio.com.br/economia/centro-de-distribuicao-midea-carrier-extrema/"}, {"Fornecedor": "WEG", "Locais": "Manaus", "Modalidade": "Fábrica", "UF": "AM", "Região": "Norte", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.weg.net/institutional/BR/pt/weg-operations"}, {"Fornecedor": "WEG", "Locais": "Espirito Santo", "Modalidade": "Fábrica", "UF": "ES", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.weg.net/institutional/BR/pt/weg-operations"}, {"Fornecedor": "WEG", "Locais": "Betim", "Modalidade": "Fábrica", "UF": "MG", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.otempobetim.com.br/ultimas/2023/7/28/weg-inaugura-centro-de-distribuicao-em-betim-1_3094829?utm_source=chatgpt.com"}, {"Fornecedor": "WEG", "Locais": "Cabo de Sto Agostinho", "Modalidade": "CD", "UF": "PE", "Região": "Nordeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.weg.net/institutional/BR/pt/weg-operations"}, {"Fornecedor": "WEG", "Locais": "Bento Gonçalves", "Modalidade": "Fábrica", "UF": "RS", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.weg.net/institutional/BR/pt/weg-operations"}, {"Fornecedor": "WEG", "Locais": "Gravataí", "Modalidade": "Fábrica", "UF": "RS", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.weg.net/institutional/BR/pt/weg-operations"}, {"Fornecedor": "WEG", "Locais": "Jaraguá do Sul", "Modalidade": "Fábrica", "UF": "SC", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.weg.net/institutional/BR/pt/weg-operations"}, {"Fornecedor": "WEG", "Locais": "Guaramirim", "Modalidade": "Fábrica", "UF": "SC", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.weg.net/institutional/BR/pt/weg-operations"}, {"Fornecedor": "WEG", "Locais": "Blumenau", "Modalidade": "Fábrica", "UF": "SC", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.weg.net/institutional/BR/pt/weg-operations"}, {"Fornecedor": "WEG", "Locais": "Itajaí", "Modalidade": "Fábrica", "UF": "SC", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.weg.net/institutional/BR/pt/weg-operations"}, {"Fornecedor": "WEG", "Locais": "São Bernardo do Campo", "Modalidade": "CD", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.weg.net/institutional/BR/pt/weg-operations"}, {"Fornecedor": "WEG", "Locais": "Mauá", "Modalidade": "CD", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.weg.net/institutional/BR/pt/weg-operations"}, {"Fornecedor": "WEG", "Locais": "Monte Alto", "Modalidade": "Fábrica", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.weg.net/institutional/BR/pt/weg-operations"}, {"Fornecedor": "WEG", "Locais": "Sertãozinho", "Modalidade": "Fábrica", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.weg.net/institutional/BR/pt/weg-operations"}, {"Fornecedor": "Philips", "Locais": "Recife", "Modalidade": "CD", "UF": "PE", "Região": "Nordeste", "M² Área Construída": 1.0, "M.O própria/Terceira": NaN, "Fontes": "https://www.tecnologistica.com.br/br/noticias/armazenagem/11648/dhl-supply-chain-assume-as-operacoes-dos-produtos-medicos-profissionais-da-philips/"}, {"Fornecedor": "Philips", "Locais": "Varginha", "Modalidade": "CD", "UF": "MG", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": NaN, "Fontes": "https://www.tecnologistica.com.br/br/noticias/armazenagem/11648/dhl-supply-chain-assume-as-operacoes-dos-produtos-medicos-profissionais-da-philips/"}, {"Fornecedor": "Philips", "Locais": "Barueri", "Modalidade": "CD", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "Terceira", "Fontes": "https://www.tecnologistica.com.br/br/noticias/armazenagem/11648/dhl-supply-chain-assume-as-operacoes-dos-produtos-medicos-profissionais-da-philips/"}, {"Fornecedor": "Cantu", "Locais": "Serra ", "Modalidade": "CD", "UF": "ES", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.cantu.inc/onde-estamos/"}, {"Fornecedor": "Cantu", "Locais": "Contagem", "Modalidade": "CD", "UF": "MG", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.cantu.inc/onde-estamos/"}, {"Fornecedor": "Cantu", "Locais": "Jaboatão dos Guararapes", "Modalidade": "CD", "UF": "PE", "Região": "Nordeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.cantu.inc/onde-estamos/"}, {"Fornecedor": "Cantu", "Locais": "Itajaí ", "Modalidade": "CD", "UF": "SC", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.cantu.inc/onde-estamos/"}, {"Fornecedor": "Cantu", "Locais": "Barueri", "Modalidade": "CD", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": "https://www.cantu.inc/onde-estamos/"}, {"Fornecedor": "Cantu", "Locais": "Lages", "Modalidade": "Parque Logístico", "UF": "SC", "Região": "Sul", "M² Área Construída": 12000.0, "M.O própria/Terceira": "-", "Fontes": "https://mundologistica.com.br/noticias/canto-inaugura-primeiro-parque-logistico-brasil#:~:text=A%20Cantu%20Inc.,dia%2C%20operando%20em%20tr%C3%AAs%20turnos."}, {"Fornecedor": "Britânia", "Locais": "Curitiba", "Modalidade": "CD", "UF": "PR", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": NaN}, {"Fornecedor": "Britânia", "Locais": "Maringá", "Modalidade": "CD", "UF": "PR", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": NaN}, {"Fornecedor": "Britânia", "Locais": "Joinville", "Modalidade": "Fábrica/CD", "UF": "SC", "Região": "Sul", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": NaN}, {"Fornecedor": "Britânia", "Locais": "São Paulo", "Modalidade": "CD", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": NaN}, {"Fornecedor": "Britânia", "Locais": "Linhares", "Modalidade": "Fábrica/CD", "UF": "ES", "Região": "Sudeste", "M² Área Construída": 1.0, "M.O própria/Terceira": "-", "Fontes": NaN}, {"Fornecedor": "Elgin", "Locais": "Manaus", "Modalidade": "Fábrica/CD", "UF": "AM", "Região": "Norte", "M² Área Construída": 21000.0, "M.O própria/Terceira": "-", "Fontes": NaN}, {"Fornecedor": "Elgin", "Locais": "Mogi", "Modalidade": "Fábrica/CD", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 42000.0, "M.O própria/Terceira": "-", "Fontes": NaN}, {"Fornecedor": "Elgin", "Locais": "Jundiaí", "Modalidade": "CD", "UF": "SP", "Região": "Sudeste", "M² Área Construída": 23000.0, "M.O própria/Terceira": "-", "Fontes": NaN}, {"Fornecedor": "Elgin", "Locais": "Itajaí", "Modalidade": "CD", "UF": "SC", "Região": "Sul", "M² Área Construída": 14000.0, "M.O própria/Terceira": "-", "Fontes": NaN}, {"Fornecedor": "Elgin", "Locais": "Joinville", "Modalidade": "CD", "UF": "SC", "Região": "Sul", "M² Área Construída": 37800.0, "M.O própria/Terceira": "-", "Fontes": NaN}, {"Fornecedor": "Elgin", "Locais": "Cabo de Santo Agostinho", "Modalidade": "CD", "UF": "PE", "Região": "Nordeste", "M² Área Construída": 10000.0, "M.O própria/Terceira": "-", "Fontes": NaN}];
+
+    function init() {
+      populateFilters();
+      updateKPIs(data);
+      renderSummary(data);
+    }
+
+    function populateFilters() {
+      const fornecedorSel = document.getElementById('fornecedorFilter');
+      const regiaoSel = document.getElementById('regiaoFilter');
+      const ufSel = document.getElementById('ufFilter');
+      const modalidadeSel = document.getElementById('modalidadeFilter');
+
+      const fornecedores = [...new Set(data.map(d => d.Fornecedor))].sort();
+      const regioes = [...new Set(data.map(d => d.Região))].sort();
+      const ufs = [...new Set(data.map(d => d.UF))].sort();
+      const modalidades = [...new Set(data.map(d => d.Modalidade))].sort();
+
+      fornecedores.forEach(f => fornecedorSel.innerHTML += `<option value="${f}">${f}</option>`);
+      regioes.forEach(r => regiaoSel.innerHTML += `<option value="${r}">${r}</option>`);
+      ufs.forEach(u => ufSel.innerHTML += `<option value="${u}">${u}</option>`);
+      modalidades.forEach(m => modalidadeSel.innerHTML += `<option value="${m}">${m}</option>`);
+
+      fornecedorSel.onchange = applyFilters;
+      regiaoSel.onchange = applyFilters;
+      ufSel.onchange = applyFilters;
+      modalidadeSel.onchange = applyFilters;
+    }
+
+    function applyFilters() {
+      const fornecedor = document.getElementById('fornecedorFilter').value;
+      const regiao = document.getElementById('regiaoFilter').value;
+      const uf = document.getElementById('ufFilter').value;
+      const modalidade = document.getElementById('modalidadeFilter').value;
+
+      const filtered = data.filter(d =>
+        (fornecedor === '' || d.Fornecedor === fornecedor) &&
+        (regiao === '' || d.Região === regiao) &&
+        (uf === '' || d.UF === uf) &&
+        (modalidade === '' || d.Modalidade === modalidade)
+      );
+
+      updateKPIs(filtered);
+      renderSummary(filtered);
+    }
+
+    function resetFilters() {
+      document.getElementById('fornecedorFilter').value = '';
+      document.getElementById('regiaoFilter').value = '';
+      document.getElementById('ufFilter').value = '';
+      document.getElementById('modalidadeFilter').value = '';
+      updateKPIs(data);
+      renderSummary(data);
+    }
+
+    function updateKPIs(arr) {
+      document.getElementById('kpiFornecedores').textContent = new Set(arr.map(d => d.Fornecedor)).size;
+      document.getElementById('kpiFabrica').textContent = arr.filter(d => d.Modalidade === 'Fábrica').length;
+    }
+
+    function renderSummary(arr) {
+      const tbody = document.getElementById('summaryBody');
+      tbody.innerHTML = '';
+      const map = new Map();
+      arr.forEach(d => {
+        const key = `${d.Fornecedor}|${d.Região}`;
+        if(!map.has(key)) map.set(key, { fornecedor: d.Fornecedor, regiao: d.Região, sites: 0, area: 0 });
+        const it = map.get(key);
+        it.sites += 1;
+        it.area += parseFloat(d['M² Área Construída']) || 0;
+        map.set(key, it);
+      });
+      Array.from(map.values()).forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${r.fornecedor}</td><td>${r.regiao}</td><td>${r.sites}</td><td>${r.area.toLocaleString()}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
